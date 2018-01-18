@@ -21,6 +21,8 @@ import io.particle.android.sdk.utils.Toaster;
 public class LoginActivity extends AppCompatActivity {
 
     public static final String PHOTONID_TYPE = "com.simplestoragesystem.simplestoragesystem.photonId";
+    public static final String USER_TYPE = "com.simplestoragesystem.simplestoragesystem.userId";
+    public static final String PASSWORD_TYPE = "com.simplestoragesystem.simplestoragesystem.passwordId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,9 @@ public class LoginActivity extends AppCompatActivity {
                         else
                         {
                             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                            intent.putExtra(PHOTONID_TYPE,mDevice.getID());
+                            intent.putExtra(USER_TYPE,email);
+                            intent.putExtra(PASSWORD_TYPE,password);
                             startActivity(intent);
                         }
                     }
