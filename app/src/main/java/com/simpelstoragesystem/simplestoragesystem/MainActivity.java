@@ -5,6 +5,8 @@ import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -22,51 +24,34 @@ import io.particle.android.sdk.utils.Toaster;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ParticleDevice mDevice;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud,Object>() {
-
-        TextView status = findViewById(R.id.status);
-
-            @Override
-            public Object callApi(ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-
-                mDevice = particleCloud.getDevice(getIntent().getStringExtra(LoginActivity.PHOTONID_TYPE));
-
-                return -1;
-            }
-
-            @Override
-            public void onSuccess(Object o) {
-                status.setText("Photon is connected to the Internet");
-                status.setTextColor(Color.GREEN);
-
-            }
-
-            @Override
-            public void onFailure(ParticleCloudException exception) {
-                status.setText("Photon is not connected to the Internet");
-                status.setTextColor(Color.RED);
-
-
-            }
-        });
+        getSupportActionBar().setIcon(R.drawable.ic_refresh_black_24dp);
+        getSupportActionBar().setIcon(R.drawable.ic_settings_black_24dp);
 
         updateValues();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.refresh:
+            case R.id.action_refresh:
                 updateValues();
+                return true;
+
+            case R.id.action_settings:
+                Toaster.s(this,"Settings no yet implemented");
                 return true;
         }
 
@@ -76,68 +61,121 @@ public class MainActivity extends AppCompatActivity {
     private void updateValues(){
          Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
 
+             TextView status = findViewById(R.id.status);
+             ParticleDevice mDevice;
+
              @Override
-            public Object callApi(@NonNull ParticleCloud ParticleCloud) throws ParticleCloudException, IOException {
+            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
 
-                Object obj;
-                List<String> sen0 = new Vector<String>();
-                List<String> sen1 = new Vector<String>();
-                List<String> sen2 = new Vector<String>();
-                List<String> sen3 = new Vector<String>();
+                 runOnUiThread(new Runnable() {
+                     @Override
+                     public void run() {
+                         TextView textView = (TextView) findViewById(R.id.sensor0int);
+                         textView.setText("Loading...");
+                         textView = (TextView) findViewById(R.id.sensor1int);
+                         textView.setText("Loading...");
+                         textView = (TextView) findViewById(R.id.sensor2int);
+                         textView.setText("Loading...");
+                         textView = (TextView) findViewById(R.id.sensor3int);
+                         textView.setText("Loading...");
+                     }
+                 });
 
-                sen0.add("0");
-                sen1.add("1");
-                sen2.add("2");
-                sen3.add("3");
+                 mDevice = particleCloud.getDevice(getIntent().getStringExtra(LoginActivity.PHOTONID_TYPE));
 
-                obj = -1;
+                 if(mDevice.isConnected())
+                 {
+                     runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             status.setText("Photon is connected to the Internet");
+                             status.setTextColor(Color.GREEN);
+                         }
+                     });
+                 }
+                 else
+                 {
+                     runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                     status.setText("Photon is not connected to the Internet");
+                     status.setTextColor(Color.RED);
+                         }
+                     });
+                    return 0;
+                 }
 
-                // FIX THIS
-                try {
-                    obj = mDevice.callFunction("getDistance",sen0);
-                    TextView temp = (TextView) findViewById(R.id.sensor0int);
-                    temp.setText(obj.toString());
-                } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                    Toaster.s(MainActivity.this,"Data could not be received");
-                }
-/*
+                 final List<String> sen0 = new Vector<String>();
+                 final List<String> sen1 = new Vector<String>();
+                 final List<String> sen2 = new Vector<String>();
+                 final List<String> sen3 = new Vector<String>();
 
-                try {
-                    obj = mDevice.callFunction("getDistance",sen1);
-                    TextView temp = (TextView) findViewById(R.id.sensor1int);
-                    temp.setText(obj.toString());
-                } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                    Toaster.s(MainActivity.this,"Data could not be received");
-                }
+                 sen0.add("0");
+                 sen1.add("1");
+                 sen2.add("2");
+                 sen3.add("3");
 
-                try {
-                    obj = mDevice.callFunction("getDistance",sen2);
-                    TextView temp = (TextView) findViewById(R.id.sensor2int);
-                    temp.setText(obj.toString());
-                } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                    Toaster.s(MainActivity.this,"Data could not be received");
-                }
+                 try {
+                     final TextView textView = (TextView) findViewById(R.id.sensor0int);
+                     final Object obj = mDevice.callFunction("getDistance", sen0);
+                     runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             textView.setText(obj.toString());
+                         }
+                     });
+                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
+                 }
 
-                try {
-                    obj = mDevice.callFunction("getDistance",sen3);
-                    TextView temp = (TextView) findViewById(R.id.sensor3int);
-                    temp.setText(obj.toString());
-                } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                    Toaster.s(MainActivity.this,"Data could not be received");
-                }
-  */
-                return obj;
-            }
+                 try {
+                     final TextView textView = (TextView) findViewById(R.id.sensor1int);
+                     final Object obj = mDevice.callFunction("getDistance", sen1);
+                     runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             textView.setText(obj.toString());
+                         }
+                     });
+                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
+                 }
+
+                 try {
+                     final TextView textView = (TextView) findViewById(R.id.sensor2int);
+                     final Object obj = mDevice.callFunction("getDistance", sen2);
+                     runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             textView.setText(obj.toString());
+                         }
+                     });
+                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
+                 }
+
+                 try {
+                     final TextView textView = (TextView) findViewById(R.id.sensor3int);
+                     final Object obj = mDevice.callFunction("getDistance", sen3);
+                     runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             textView.setText(obj.toString());
+                         }
+                     });
+                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
+                 }
+
+
+                 return 0;
+             }
 
             @Override
             public void onSuccess(Object obj) {
-                Toaster.s(MainActivity.this,"Data successfully pulled of the Particle cloud");
-            }
+             }
 
             @Override
             public void onFailure(ParticleCloudException exception) {
-                Toaster.s(MainActivity.this,"Data unsuccessfully pulled of the Particle cloud");
-            }
+                status.setText("Photon is not connected to the Internet");
+                status.setTextColor(Color.RED);
+             }
         });
     }
     @Override

@@ -76,5 +76,4 @@
         android:text="Email"
         app:layout_constraintBottom_toTopOf="@+id/editTextMail"
         app:layout_constraintStart_toStartOf="@+id/editTextMail" />
-
-</android.support.constraint.ConstraintLayout>
+  </android.support.constraint.ConstraintLayout>
