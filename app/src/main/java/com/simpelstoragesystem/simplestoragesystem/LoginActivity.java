@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(Object o) {
                         Toaster.s(LoginActivity.this,"Succeeded, logged in with account id " + ParticleCloudSDK.getCloud().getLoggedInUsername());
                         if(!productFound)
-                            Toaster.l(LoginActivity.this,"Login cancelled, the product photon has not been found");
+                            Toaster.l(LoginActivity.this,"Login cancelled, the product Photon has not been found");
                         else
                         {
                             Intent intent = new Intent(LoginActivity.this,MainActivity.class);

@@ -174,10 +174,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     @Override
-    public void onBackPressed() {
+    public void onDestroy() {
+        super.onDestroy();
         ParticleCloudSDK.getCloud().logOut();
-        Toaster.s(this,"You have been logged out!");
-        finish();
+        Toaster.s(this, "You have been logged out!");
     }
 
 }
