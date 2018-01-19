@@ -78,22 +78,15 @@ public class MainActivity extends AppCompatActivity {
                          textView.setText("Loading...");
                          textView = (TextView) findViewById(R.id.sensor3int);
                          textView.setText("Loading...");
+
+                         status.setText("Connecting to Photon...");
+                         status.setTextColor(Color.GRAY);
                      }
                  });
 
                  mDevice = particleCloud.getDevice(getIntent().getStringExtra(LoginActivity.PHOTONID_TYPE));
 
-                 if(mDevice.isConnected())
-                 {
-                     runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                             status.setText("Photon is connected to the Internet");
-                             status.setTextColor(Color.GREEN);
-                         }
-                     });
-                 }
-                 else
+                 if(!mDevice.isConnected())
                  {
                      runOnUiThread(new Runnable() {
                          @Override
@@ -121,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
                      runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
+                             status.setText("Photon is connected to the Internet");
+                             status.setTextColor(Color.GREEN);
+
                              textView.setText(obj.toString());
                          }
                      });
@@ -162,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                      });
                  } catch (ParticleDevice.FunctionDoesNotExistException e) {
                  }
-
 
                  return 0;
              }
