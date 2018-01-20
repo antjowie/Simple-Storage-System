@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -35,16 +37,20 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences mPreferences;
     private String sharedPrefFile = "com.simplestoragesystem.simplestoragesystem.login";
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onPause() {
         super.onPause();
 
         SharedPreferences.Editor prefEdit = mPreferences.edit();
-        prefEdit.putString(EMAIL_KEY,findViewById(R.id.editTextMail).toString());
+
+        TextView emailText = findViewById(R.id.editTextMail);
+        prefEdit.putString(EMAIL_KEY,emailText.getText().toString());
         final CheckBox checkBox = findViewById(R.id.checkBox_password);
         if(checkBox.isChecked())
-            prefEdit.putString(PASSWORD_KEY,findViewById(R.id.editTextPassword).toString());
+        {
+            TextView passwordText = findViewById(R.id.editTextPassword);
+            prefEdit.putString(PASSWORD_KEY,passwordText.getText().toString());
+        }
         else
             prefEdit.putString(PASSWORD_KEY,"");
         prefEdit.apply();
@@ -64,16 +70,19 @@ public class LoginActivity extends AppCompatActivity {
         passwordText.setText(mPreferences.getString(PASSWORD_KEY, ""));
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox_password);
-        checkBox.setOnClickListener(new View.OnClickListener() {
+        if(!passwordText.getText().toString().equals(""))
+            checkBox.setChecked(true);
 
+        checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!checkBox.isChecked())
-                    Toaster.s(LoginActivity.this,"The password is not encrypted on device storage");
-                checkBox.toggle();
+                // This should be the other way around but that doesn't seem to work
+                checkBox.setChecked(checkBox.isChecked() ? true:false);
+                if(checkBox.isChecked())
+                Toaster.s(LoginActivity.this,"The password is not encrypted on device storage");
             }
-
         });
+
         final Button signIn = findViewById(R.id.button);
         signIn.setOnClickListener(new View.OnClickListener() {
 
