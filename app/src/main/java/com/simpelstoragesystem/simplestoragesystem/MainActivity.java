@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().setIcon(R.drawable.ic_refresh_black_24dp);
-        getSupportActionBar().setIcon(R.drawable.ic_settings_black_24dp);
+        getSupportActionBar().setIcon(R.drawable.ic_refresh_white_24dp);
+        getSupportActionBar().setIcon(R.drawable.ic_settings_white_24dp);
 
         updateValues();
     }
