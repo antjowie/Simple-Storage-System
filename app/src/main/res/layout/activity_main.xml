@@ -61,11 +61,12 @@
 
     <TextView
         android:id="@+id/sensor0int"
-        android:layout_width="42dp"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Loading..."
+        android:textAlignment="textEnd"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sensor0"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,11 +75,12 @@
 
     <TextView
         android:id="@+id/sensor1int"
-        android:layout_width="42dp"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Loading..."
+        android:textAlignment="textEnd"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sensor1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,11 +89,12 @@
 
     <TextView
         android:id="@+id/sensor2int"
-        android:layout_width="42dp"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Loading"
+        android:text="Loading..."
+        android:textAlignment="textEnd"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sensor2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,11 +103,12 @@
 
     <TextView
         android:id="@+id/sensor3int"
-        android:layout_width="42dp"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Loading..."
+        android:textAlignment="textEnd"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sensor3"
         app:layout_constraintEnd_toEndOf="parent"

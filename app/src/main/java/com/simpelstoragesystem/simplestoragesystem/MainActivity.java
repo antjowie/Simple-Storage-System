@@ -1,5 +1,7 @@
 package com.simpelstoragesystem.simplestoragesystem;
 
+import android.app.VoiceInteractor;
+import android.content.Intent;
 import android.graphics.Color;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
@@ -51,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_settings:
-                Toaster.s(this,"Settings no yet implemented");
+                Intent intent = new Intent(this, OptionActivity.class);
+                startActivity(intent);
                 return true;
         }
 
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                          @Override
                          public void run() {
                              status.setText("Photon is connected to the Internet");
-                             status.setTextColor(Color.GREEN);
+                             status.setTextColor(Color.rgb(63,81,181));
 
                              textView.setText(obj.toString());
                          }

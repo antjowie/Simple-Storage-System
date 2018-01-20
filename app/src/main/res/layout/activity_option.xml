@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.simpelstoragesystem.simplestoragesystem.OptionActivity">
+
+
+    <TextView
+        android:id="@+id/sensor0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Sensor0"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/sensor0name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sensor1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:text="Sensor1"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/sensor1name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensor0" />
+
+    <TextView
+        android:id="@+id/sensor2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:text="Sensor2"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/sensor2name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensor1" />
+
+    <TextView
+        android:id="@+id/sensor3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:text="Sensor3"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/sensor3name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensor2" />
+
+    <EditText
+        android:id="@+id/sensor0name"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Item"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/sensor1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensor0" />
+
+    <EditText
+        android:id="@+id/sensor1name"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:hint="Item"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/sensor2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensor1" />
+
+    <EditText
+        android:id="@+id/sensor2name"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Item"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/sensor3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensor2" />
+
+    <EditText
+        android:id="@+id/sensor3name"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Item"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensor3" />
+
+    <Button
+        android:id="@+id/button_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="apply"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/sensor3calibrate"
+        android:layout_width="78dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Calibrate"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/snesor3amount"
+        app:layout_constraintEnd_toStartOf="@+id/snesor3amount"
+        app:layout_constraintStart_toEndOf="@+id/sensor3name" />
+
+    <Button
+        android:id="@+id/sensor2calibrate"
+        android:layout_width="78dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Calibrate"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor2amount"
+        app:layout_constraintEnd_toStartOf="@+id/sensor2amount"
+        app:layout_constraintStart_toEndOf="@+id/sensor2name" />
+
+    <Button
+        android:id="@+id/sensor1calibrate"
+        android:layout_width="78dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Calibrate"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor1amount"
+        app:layout_constraintEnd_toStartOf="@+id/sensor1amount"
+        app:layout_constraintStart_toEndOf="@+id/sensor1name" />
+
+    <Button
+        android:id="@+id/sensor0calibrate"
+        android:layout_width="78dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Calibrate"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor0amount"
+        app:layout_constraintEnd_toStartOf="@+id/sensor0amount"
+        app:layout_constraintStart_toEndOf="@+id/sensor0name" />
+
+    <EditText
+        android:id="@+id/snesor3amount"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="amount"
+        android:inputType="numberSigned"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor3name"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/sensor2amount"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="amount"
+        android:inputType="numberSigned"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor2name"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/sensor1amount"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="amount"
+        android:inputType="numberSigned"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor1name"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/sensor0amount"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="amount"
+        android:inputType="numberSigned"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor0name"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

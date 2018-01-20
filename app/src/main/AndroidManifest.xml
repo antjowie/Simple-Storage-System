@@ -16,7 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:parentActivityName=".LoginActivity" android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".LoginActivity" />
+        <activity android:name=".OptionActivity"
+        android:launchMode="singleTop"
+        android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
