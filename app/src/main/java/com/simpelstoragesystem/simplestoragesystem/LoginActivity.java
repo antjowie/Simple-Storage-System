@@ -1,12 +1,17 @@
 package com.simpelstoragesystem.simplestoragesystem;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,12 +29,51 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USER_TYPE = "com.simplestoragesystem.simplestoragesystem.userId";
     public static final String PASSWORD_TYPE = "com.simplestoragesystem.simplestoragesystem.passwordId";
 
+    private static final String EMAIL_KEY = "com.simplestoragesystem.simplestoragesystme.emailKey";
+    private static final String PASSWORD_KEY = "com.simplestoragesystem.simplestoragesystme.passwordKey";
+
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.simplestoragesystem.simplestoragesystem.login";
+
+    @SuppressLint("WrongViewCast")
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor prefEdit = mPreferences.edit();
+        prefEdit.putString(EMAIL_KEY,findViewById(R.id.editTextMail).toString());
+        final CheckBox checkBox = findViewById(R.id.checkBox_password);
+        if(checkBox.isChecked())
+            prefEdit.putString(PASSWORD_KEY,findViewById(R.id.editTextPassword).toString());
+        else
+            prefEdit.putString(PASSWORD_KEY,"");
+        prefEdit.apply();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ParticleCloudSDK.init(LoginActivity.this);
         setContentView(R.layout.activity_login);
 
+        mPreferences = getSharedPreferences(sharedPrefFile,MODE_PRIVATE);
+        TextView emailText = findViewById(R.id.editTextMail);
+        emailText.setText(mPreferences.getString(EMAIL_KEY, ""));
+
+        TextView passwordText = findViewById(R.id.editTextPassword);
+        passwordText.setText(mPreferences.getString(PASSWORD_KEY, ""));
+
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox_password);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if(!checkBox.isChecked())
+                    Toaster.s(LoginActivity.this,"The password is not encrypted on device storage");
+                checkBox.toggle();
+            }
+
+        });
         final Button signIn = findViewById(R.id.button);
         signIn.setOnClickListener(new View.OnClickListener() {
 

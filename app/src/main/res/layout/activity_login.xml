@@ -78,4 +78,15 @@
         android:text="Email"
         app:layout_constraintBottom_toTopOf="@+id/editTextMail"
         app:layout_constraintStart_toStartOf="@+id/editTextMail" />
-  </android.support.constraint.ConstraintLayout>
+
+    <CheckBox
+        android:id="@+id/checkBox_password"
+        android:layout_width="179dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:buttonTint="@color/colorPrimary"
+        android:text="Remember password"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword" />
+
+</android.support.constraint.ConstraintLayout>
