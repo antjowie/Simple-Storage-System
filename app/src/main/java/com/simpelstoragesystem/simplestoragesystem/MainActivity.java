@@ -2,6 +2,7 @@ package com.simpelstoragesystem.simplestoragesystem;
 
 import android.app.VoiceInteractor;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toolbar;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,10 +29,37 @@ import io.particle.android.sdk.utils.Toaster;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SharedPreferences mPreferences;
+    public static String mPrefFile = "com.simplestoragesystem.simplestoragesystem.sensorData";
+    public static String SENSOR0_KEY = "com.simplestoragesystem.simplestoragesystem.sensor0key";
+    public static String SENSOR1_KEY = "com.simplestoragesystem.simplestoragesystem.sensor1key";
+    public static String SENSOR2_KEY = "com.simplestoragesystem.simplestoragesystem.sensor2key";
+    public static String SENSOR3_KEY = "com.simplestoragesystem.simplestoragesystem.sensor3key";
+
+    public static String ITEM0LENGTH_KEY = "com.simplestoragesystem.simplestoragesystem.item0lengthKey";
+    public static String ITEM1LENGTH_KEY = "com.simplestoragesystem.simplestoragesystem.item1lengthKey";
+    public static String ITEM2LENGTH_KEY = "com.simplestoragesystem.simplestoragesystem.item2lengthKey";
+    public static String ITEM3LENGTH_KEY = "com.simplestoragesystem.simplestoragesystem.item3lengthKey";
+
+    private float mBoxHeigth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mPreferences = getSharedPreferences(mPrefFile,MODE_PRIVATE);
+
+        TextView button = findViewById(R.id.sensor0);
+        button.setText(mPreferences.getString(SENSOR0_KEY,"Sensor0"));
+        button = findViewById(R.id.sensor1);
+        button.setText(mPreferences.getString(SENSOR1_KEY,"Sensor1"));
+        button = findViewById(R.id.sensor2);
+        button.setText(mPreferences.getString(SENSOR2_KEY,"Sensor2"));
+        button = findViewById(R.id.sensor3);
+        button.setText(mPreferences.getString(SENSOR3_KEY,"Sensor3"));
+
+        mBoxHeigth = Float.parseFloat(mPreferences.getString(OptionActivity.BOXHEIGTH_KEY,"25"));
 
         getSupportActionBar().setIcon(R.drawable.ic_refresh_white_24dp);
         getSupportActionBar().setIcon(R.drawable.ic_settings_white_24dp);
@@ -42,6 +72,21 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        TextView button = findViewById(R.id.sensor0);
+        button.setText(mPreferences.getString(SENSOR0_KEY,"Sensor0"));
+        button = findViewById(R.id.sensor1);
+        button.setText(mPreferences.getString(SENSOR1_KEY,"Sensor1"));
+        button = findViewById(R.id.sensor2);
+        button.setText(mPreferences.getString(SENSOR2_KEY,"Sensor2"));
+        button = findViewById(R.id.sensor3);
+        button.setText(mPreferences.getString(SENSOR3_KEY,"Sensor3"));
+
     }
 
     @Override
@@ -75,15 +120,19 @@ public class MainActivity extends AppCompatActivity {
                      public void run() {
                          TextView textView = (TextView) findViewById(R.id.sensor0int);
                          textView.setText("Loading...");
+                         textView.setTextColor(Color.rgb(148,148,148));
                          textView = (TextView) findViewById(R.id.sensor1int);
                          textView.setText("Loading...");
+                         textView.setTextColor(Color.rgb(148,148,148));
                          textView = (TextView) findViewById(R.id.sensor2int);
                          textView.setText("Loading...");
+                         textView.setTextColor(Color.rgb(148,148,148));
                          textView = (TextView) findViewById(R.id.sensor3int);
                          textView.setText("Loading...");
+                         textView.setTextColor(Color.rgb(148,148,148));
 
                          status.setText("Connecting to Photon...");
-                         status.setTextColor(Color.GRAY);
+                         status.setTextColor(Color.rgb(148,148,148));
                      }
                  });
 
@@ -118,9 +167,18 @@ public class MainActivity extends AppCompatActivity {
                          @Override
                          public void run() {
                              status.setText("Photon is connected to the Internet");
-                             status.setTextColor(Color.rgb(63,81,181));
+                             status.setTextColor(Color.rgb(63, 81, 181));
 
-                             textView.setText(obj.toString());
+                             final float length = mPreferences.getFloat(ITEM0LENGTH_KEY, 0);
+                             if (length == 0) {
+                                 textView.setText("Not calibrated");
+                                 textView.setTextColor(Color.RED);
+                             } else {
+                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
+                                 if(amount % 1 > 0.5)
+                                     amount += 1;
+                                 textView.setText(Integer.toString((int)amount));
+                             }
                          }
                      });
                  } catch (ParticleDevice.FunctionDoesNotExistException e) {
@@ -132,7 +190,16 @@ public class MainActivity extends AppCompatActivity {
                      runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
-                             textView.setText(obj.toString());
+                             final float length = mPreferences.getFloat(ITEM1LENGTH_KEY, 0);
+                             if (length == 0) {
+                                 textView.setText("Not calibrated");
+                                 textView.setTextColor(Color.RED);
+                             } else {
+                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
+                                 if(amount % 1 > 0.5)
+                                     amount += 1;
+                                 textView.setText(Integer.toString((int)amount));
+                             }
                          }
                      });
                  } catch (ParticleDevice.FunctionDoesNotExistException e) {
@@ -144,7 +211,16 @@ public class MainActivity extends AppCompatActivity {
                      runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
-                             textView.setText(obj.toString());
+                             final float length = mPreferences.getFloat(ITEM2LENGTH_KEY, 0);
+                             if (length == 0) {
+                                 textView.setText("Not calibrated");
+                                 textView.setTextColor(Color.RED);
+                             } else {
+                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
+                                 if(amount % 1 > 0.5)
+                                     amount += 1;
+                                 textView.setText(Integer.toString((int)amount));
+                             }
                          }
                      });
                  } catch (ParticleDevice.FunctionDoesNotExistException e) {
@@ -156,7 +232,16 @@ public class MainActivity extends AppCompatActivity {
                      runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
-                             textView.setText(obj.toString());
+                             final float length = mPreferences.getFloat(ITEM3LENGTH_KEY, 0);
+                             if (length == 0) {
+                                 textView.setText("Not calibrated");
+                                 textView.setTextColor(Color.RED);
+                             } else {
+                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
+                                 if(amount % 1 > 0.5)
+                                     amount += 1;
+                                 textView.setText(Integer.toString((int)amount));
+                             }
                          }
                      });
                  } catch (ParticleDevice.FunctionDoesNotExistException e) {

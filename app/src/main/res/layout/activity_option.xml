@@ -8,55 +8,55 @@
 
 
     <TextView
-        android:id="@+id/sensor0"
+        android:id="@+id/textview0"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="Sensor0"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/sensor0name"
+        app:layout_constraintEnd_toEndOf="@+id/item0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/sensor1"
+        android:id="@+id/textview1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
         android:text="Sensor1"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/sensor1name"
+        app:layout_constraintEnd_toEndOf="@+id/item1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor0" />
+        app:layout_constraintTop_toBottomOf="@+id/textview0" />
 
     <TextView
-        android:id="@+id/sensor2"
+        android:id="@+id/textview2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
         android:text="Sensor2"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/sensor2name"
+        app:layout_constraintEnd_toEndOf="@+id/item2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor1" />
+        app:layout_constraintTop_toBottomOf="@+id/textview1" />
 
     <TextView
-        android:id="@+id/sensor3"
+        android:id="@+id/textview3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
         android:text="Sensor3"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/sensor3name"
+        app:layout_constraintEnd_toEndOf="@+id/item3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor2" />
+        app:layout_constraintTop_toBottomOf="@+id/textview2" />
 
     <EditText
-        android:id="@+id/sensor0name"
+        android:id="@+id/item0"
         android:layout_width="192dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -64,24 +64,12 @@
         android:ems="10"
         android:hint="Item"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/sensor1"
+        app:layout_constraintEnd_toEndOf="@+id/textview1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor0" />
+        app:layout_constraintTop_toBottomOf="@+id/textview0" />
 
     <EditText
-        android:id="@+id/sensor1name"
-        android:layout_width="192dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:ems="10"
-        android:hint="Item"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/sensor2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor1" />
-
-    <EditText
-        android:id="@+id/sensor2name"
+        android:id="@+id/item1"
         android:layout_width="192dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -89,12 +77,25 @@
         android:ems="10"
         android:hint="Item"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/sensor3"
+        app:layout_constraintEnd_toEndOf="@+id/textview2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor2" />
+        app:layout_constraintTop_toBottomOf="@+id/textview1" />
 
     <EditText
-        android:id="@+id/sensor3name"
+        android:id="@+id/item2"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Item"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/textview3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview2" />
+
+    <EditText
+        android:id="@+id/item3"
         android:layout_width="192dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -103,7 +104,7 @@
         android:hint="Item"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor3" />
+        app:layout_constraintTop_toBottomOf="@+id/textview3" />
 
     <Button
         android:id="@+id/button_apply"
@@ -117,7 +118,7 @@
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/boxHeightText" />
 
     <Button
         android:id="@+id/sensor3calibrate"
@@ -129,9 +130,9 @@
         android:text="Calibrate"
         android:textColor="@android:color/background_light"
         android:textSize="10sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/snesor3amount"
-        app:layout_constraintEnd_toStartOf="@+id/snesor3amount"
-        app:layout_constraintStart_toEndOf="@+id/sensor3name" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/sensor3amount"
+        app:layout_constraintEnd_toStartOf="@+id/sensor3amount"
+        app:layout_constraintStart_toEndOf="@+id/item3" />
 
     <Button
         android:id="@+id/sensor2calibrate"
@@ -145,7 +146,7 @@
         android:textSize="10sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sensor2amount"
         app:layout_constraintEnd_toStartOf="@+id/sensor2amount"
-        app:layout_constraintStart_toEndOf="@+id/sensor2name" />
+        app:layout_constraintStart_toEndOf="@+id/item2" />
 
     <Button
         android:id="@+id/sensor1calibrate"
@@ -159,7 +160,7 @@
         android:textSize="10sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sensor1amount"
         app:layout_constraintEnd_toStartOf="@+id/sensor1amount"
-        app:layout_constraintStart_toEndOf="@+id/sensor1name" />
+        app:layout_constraintStart_toEndOf="@+id/item1" />
 
     <Button
         android:id="@+id/sensor0calibrate"
@@ -173,17 +174,17 @@
         android:textSize="10sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sensor0amount"
         app:layout_constraintEnd_toStartOf="@+id/sensor0amount"
-        app:layout_constraintStart_toEndOf="@+id/sensor0name" />
+        app:layout_constraintStart_toEndOf="@+id/item0" />
 
     <EditText
-        android:id="@+id/snesor3amount"
+        android:id="@+id/sensor3amount"
         android:layout_width="78dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="amount"
+        android:hint="Amount"
         android:inputType="numberSigned"
-        app:layout_constraintBaseline_toBaselineOf="@+id/sensor3name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/item3"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
@@ -192,9 +193,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="amount"
+        android:hint="Amount"
         android:inputType="numberSigned"
-        app:layout_constraintBaseline_toBaselineOf="@+id/sensor2name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/item2"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
@@ -203,9 +204,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="amount"
+        android:hint="Amount"
         android:inputType="numberSigned"
-        app:layout_constraintBaseline_toBaselineOf="@+id/sensor1name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/item1"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
@@ -214,9 +215,30 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="amount"
+        android:hint="Amount"
         android:inputType="numberSigned"
-        app:layout_constraintBaseline_toBaselineOf="@+id/sensor0name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/item0"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Height of each box"
+        app:layout_constraintBottom_toTopOf="@+id/boxHeightText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/boxHeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:hint="Height"
+        android:inputType="numberDecimal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_apply"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
