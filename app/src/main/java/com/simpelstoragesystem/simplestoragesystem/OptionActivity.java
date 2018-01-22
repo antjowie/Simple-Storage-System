@@ -30,10 +30,10 @@ public class OptionActivity extends AppCompatActivity {
     private TextView item2;
     private TextView item3;
 
+    private float item3length;
     private float item0length;
     private float item1length;
     private float item2length;
-    private float item3length;
 
     EditText sensor0amount;
     EditText sensor1amount;
@@ -107,6 +107,7 @@ public class OptionActivity extends AppCompatActivity {
                 prefEdit.putString(BOXHEIGTH_KEY, boxHeigth.getText().toString());
 
                 prefEdit.apply();
+                finish();
             }
         });
 
@@ -147,50 +148,76 @@ public class OptionActivity extends AppCompatActivity {
 
     private void updateItemHeight(final int sensorId, final int amount) {
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-            final float maxDistance = Integer.parseInt(boxHeigth.getText().toString());
+            float maxDistance = 0;
 
             float tempHeight;
 
-                @Override
-                public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-                    ParticleDevice device = null;
-                    Boolean productFound = false;
-                    for(ParticleDevice iter: ParticleCloudSDK.getCloud().getDevices())
+            @Override
+            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+                if(boxHeigth.getText().toString().isEmpty())
+                {
+                    Toaster.s(OptionActivity.this,"Box heigth is invalid");
+                    return -3;
+                }
+                maxDistance = Float.parseFloat(boxHeigth.getText().toString());
+
+                ParticleDevice device = null;
+                Boolean productFound = false;
+                for(ParticleDevice iter: ParticleCloudSDK.getCloud().getDevices())
+                {
+                    if(productFound)
+                        break;
+                    if(iter.getName().equals("SimpleStorageSystem"))
                     {
-                        if(productFound)
+                        device = iter;
+                        productFound = true;
+                    }
+                }
+                if(device == null)
+                    return -1;
+
+                Vector<String> id = new Vector<String>();
+                id.add(Integer.toString(sensorId));
+
+                tempHeight = 0;
+                try {
+                    if(device.callFunction("updateSensor", id) == 0)
+                    switch (sensorId)
+                    {
+                        case 0:
+                            tempHeight = (float) device.getDoubleVariable("sensor0cm");
                             break;
-                        if(iter.getName().equals("SimpleStorageSystem"))
-                        {
-                            device = iter;
-                            productFound = true;
-                        }
+                        case 1:
+                            tempHeight = (float) device.getDoubleVariable("sensor1cm");
+                            break;
+                        case 2:
+                            tempHeight = (float) device.getDoubleVariable("sensor2cm");
+                            break;
+                        case 3:
+                            tempHeight = (float) device.getDoubleVariable("sensor3cm");
+                            break;
                     }
-                    if(device == null)
-                        return 0;
-
-                    Vector<String> id = new Vector<String>();
-                    id.add(Integer.toString(sensorId));
-
-                    tempHeight = 0;
-                    try {
-
-                        tempHeight = device.callFunction("getDistance", id);
-                    } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                        e.printStackTrace();
-                    }
-
-                    return 0;
+                    else
+                        Toaster.s(OptionActivity.this,"Error updating sensor value");
+                } catch (ParticleDevice.FunctionDoesNotExistException e) {
+                    e.printStackTrace();
+                    return -2;
+                } catch (ParticleDevice.VariableDoesNotExistException e) {
+                    e.printStackTrace();
                 }
 
-                @Override
-                public void onSuccess(Object o) {
+                return 0;
+            }
 
-                }
+            @Override
+            public void onSuccess(Object o) {
 
-                @Override
-                public void onFailure(ParticleCloudException exception) {
+            }
 
-                }
+            @Override
+            public void onFailure(ParticleCloudException exception) {
+
+            }
 
             @Override
             public void onTaskFinished() {

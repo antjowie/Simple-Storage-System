@@ -8,6 +8,7 @@ import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -107,165 +108,214 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateValues(){
-         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
+        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
 
-             TextView status = findViewById(R.id.status);
-             ParticleDevice mDevice;
+            TextView status = findViewById(R.id.status);
+            ParticleDevice mDevice;
 
-             @Override
+            @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
 
-                 runOnUiThread(new Runnable() {
-                     @Override
-                     public void run() {
-                         TextView textView = (TextView) findViewById(R.id.sensor0int);
-                         textView.setText("Loading...");
-                         textView.setTextColor(Color.rgb(148,148,148));
-                         textView = (TextView) findViewById(R.id.sensor1int);
-                         textView.setText("Loading...");
-                         textView.setTextColor(Color.rgb(148,148,148));
-                         textView = (TextView) findViewById(R.id.sensor2int);
-                         textView.setText("Loading...");
-                         textView.setTextColor(Color.rgb(148,148,148));
-                         textView = (TextView) findViewById(R.id.sensor3int);
-                         textView.setText("Loading...");
-                         textView.setTextColor(Color.rgb(148,148,148));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView textView = (TextView) findViewById(R.id.sensor0int);
+                        textView.setText("Loading...");
+                        textView.setTextColor(Color.rgb(148,148,148));
+                        textView = (TextView) findViewById(R.id.sensor1int);
+                        textView.setText("Loading...");
+                        textView.setTextColor(Color.rgb(148,148,148));
+                        textView = (TextView) findViewById(R.id.sensor2int);
+                        textView.setText("Loading...");
+                        textView.setTextColor(Color.rgb(148,148,148));
+                        textView = (TextView) findViewById(R.id.sensor3int);
+                        textView.setText("Loading...");
+                        textView.setTextColor(Color.rgb(148,148,148));
 
-                         status.setText("Connecting to Photon...");
-                         status.setTextColor(Color.rgb(148,148,148));
-                     }
-                 });
+                        status.setText("Connecting to Photon...");
+                        status.setTextColor(Color.rgb(148,148,148));
+                    }
+                });
 
-                 mDevice = particleCloud.getDevice(getIntent().getStringExtra(LoginActivity.PHOTONID_TYPE));
+                mDevice = particleCloud.getDevice(getIntent().getStringExtra(LoginActivity.PHOTONID_TYPE));
 
-                 if(!mDevice.isConnected())
-                 {
-                     runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                     status.setText("Photon is not connected to the Internet");
-                     status.setTextColor(Color.RED);
-                         }
-                     });
+                if(!mDevice.isConnected())
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            status.setText("Photon is not connected to the Internet");
+                            status.setTextColor(Color.RED);
+                        }
+                    });
                     return 0;
-                 }
+                }
 
-                 final List<String> sen0 = new Vector<String>();
-                 final List<String> sen1 = new Vector<String>();
-                 final List<String> sen2 = new Vector<String>();
-                 final List<String> sen3 = new Vector<String>();
+                final List<String> sen0 = new Vector<String>();
+                final List<String> sen1 = new Vector<String>();
+                final List<String> sen2 = new Vector<String>();
+                final List<String> sen3 = new Vector<String>();
 
-                 sen0.add("0");
-                 sen1.add("1");
-                 sen2.add("2");
-                 sen3.add("3");
+                sen0.add("0");
+                sen1.add("1");
+                sen2.add("2");
+                sen3.add("3");
 
-                 try {
-                     final TextView textView = (TextView) findViewById(R.id.sensor0int);
-                     final Object obj = mDevice.callFunction("getDistance", sen0);
-                     runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                             status.setText("Photon is connected to the Internet");
-                             status.setTextColor(Color.rgb(63, 81, 181));
+                try {
+                    runOnUiThread(new Runnable() {
+                        Object obj = mDevice.callFunction("updateSensor", sen0);
+                        float distance = (float) mDevice.getDoubleVariable("sensor0cm");
+                        final TextView textView = (TextView) findViewById(R.id.sensor0int);
+                        @Override
+                        public void run() {
+                            status.setText("Photon is connected to the Internet");
+                            status.setTextColor(Color.rgb(63, 81, 181));
 
-                             final float length = mPreferences.getFloat(ITEM0LENGTH_KEY, 0);
-                             if (length == 0) {
-                                 textView.setText("Not calibrated");
-                                 textView.setTextColor(Color.RED);
-                             } else {
-                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
-                                 if(amount % 1 > 0.5)
-                                     amount += 1;
-                                 textView.setText(Integer.toString((int)amount));
-                             }
-                         }
-                     });
-                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                 }
+                            final float length = mPreferences.getFloat(ITEM0LENGTH_KEY, 0);
+                            if (length == 0) {
+                                textView.setText("Not calibrated");
+                                textView.setTextColor(Color.RED);
+                            }
+                            else if (!obj.toString().equals("0"))
+                            {
+                                textView.setTextColor(Color.RED);
+                                textView.setText("Error code" + obj.toString());
+                            }
+                            else {
+                                float amount = (mBoxHeigth - distance) / length;
 
-                 try {
-                     final TextView textView = (TextView) findViewById(R.id.sensor1int);
-                     final Object obj = mDevice.callFunction("getDistance", sen1);
-                     runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                             final float length = mPreferences.getFloat(ITEM1LENGTH_KEY, 0);
-                             if (length == 0) {
-                                 textView.setText("Not calibrated");
-                                 textView.setTextColor(Color.RED);
-                             } else {
-                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
-                                 if(amount % 1 > 0.5)
-                                     amount += 1;
-                                 textView.setText(Integer.toString((int)amount));
-                             }
-                         }
-                     });
-                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                 }
 
-                 try {
-                     final TextView textView = (TextView) findViewById(R.id.sensor2int);
-                     final Object obj = mDevice.callFunction("getDistance", sen2);
-                     runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                             final float length = mPreferences.getFloat(ITEM2LENGTH_KEY, 0);
-                             if (length == 0) {
-                                 textView.setText("Not calibrated");
-                                 textView.setTextColor(Color.RED);
-                             } else {
-                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
-                                 if(amount % 1 > 0.5)
-                                     amount += 1;
-                                 textView.setText(Integer.toString((int)amount));
-                             }
-                         }
-                     });
-                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                 }
+                                if(amount % 1 > 0.5)
+                                    amount += 1;
+                                textView.setText(Integer.toString((int)amount));
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                 try {
-                     final TextView textView = (TextView) findViewById(R.id.sensor3int);
-                     final Object obj = mDevice.callFunction("getDistance", sen3);
-                     runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                             final float length = mPreferences.getFloat(ITEM3LENGTH_KEY, 0);
-                             if (length == 0) {
-                                 textView.setText("Not calibrated");
-                                 textView.setTextColor(Color.RED);
-                             } else {
-                                 float amount = (mBoxHeigth - Float.parseFloat(obj.toString())) / length;
-                                 if(amount % 1 > 0.5)
-                                     amount += 1;
-                                 textView.setText(Integer.toString((int)amount));
-                             }
-                         }
-                     });
-                 } catch (ParticleDevice.FunctionDoesNotExistException e) {
-                 }
+                try {
+                    runOnUiThread(new Runnable() {
+                        Object obj = mDevice.callFunction("updateSensor", sen1);
+                        float distance = (float) mDevice.getDoubleVariable("sensor1cm");
+                        final TextView textView = (TextView) findViewById(R.id.sensor0int);
+                        @Override
+                        public void run() {
+                            status.setText("Photon is connected to the Internet");
+                            status.setTextColor(Color.rgb(63, 81, 181));
 
-                 return 0;
-             }
+                            final float length = mPreferences.getFloat(ITEM1LENGTH_KEY, 0);
+                            if (length == 0) {
+                                textView.setText("Not calibrated");
+                                textView.setTextColor(Color.RED);
+                            }
+                            else if (!obj.toString().equals("0"))
+                            {
+                                textView.setTextColor(Color.RED);
+                                textView.setText("Error code" + obj.toString());
+                            }
+                            else {
+                                float amount = (mBoxHeigth - distance) / length;
+
+
+                                if(amount % 1 > 0.5)
+                                    amount += 1;
+                                textView.setText(Integer.toString((int)amount));
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    runOnUiThread(new Runnable() {
+                        Object obj = mDevice.callFunction("updateSensor", sen2);
+                        float distance = (float) mDevice.getDoubleVariable("sensor2cm");
+                        final TextView textView = (TextView) findViewById(R.id.sensor2int);
+                        @Override
+                        public void run() {
+                            status.setText("Photon is connected to the Internet");
+                            status.setTextColor(Color.rgb(63, 81, 181));
+
+                            final float length = mPreferences.getFloat(ITEM2LENGTH_KEY, 0);
+                            if (length == 0) {
+                                textView.setText("Not calibrated");
+                                textView.setTextColor(Color.RED);
+                            }
+                            else if (!obj.toString().equals("0"))
+                            {
+                                textView.setTextColor(Color.RED);
+                                textView.setText("Error code" + obj.toString());
+                            }
+                            else {
+                                float amount = (mBoxHeigth - distance) / length;
+
+
+                                if(amount % 1 > 0.5)
+                                    amount += 1;
+                                textView.setText(Integer.toString((int)amount));
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    runOnUiThread(new Runnable() {
+                        Object obj = mDevice.callFunction("updateSensor", sen3);
+                        float distance = (float) mDevice.getDoubleVariable("sensor3cm");
+                        final TextView textView = (TextView) findViewById(R.id.sensor3int);
+                        @Override
+                        public void run() {
+                            status.setText("Photon is connected to the Internet");
+                            status.setTextColor(Color.rgb(63, 81, 181));
+
+                            final float length = mPreferences.getFloat(ITEM3LENGTH_KEY, 0);
+                            if (length == 0) {
+                                textView.setText("Not calibrated");
+                                textView.setTextColor(Color.RED);
+                            }
+                            else if (!obj.toString().equals("0"))
+                            {
+                                textView.setTextColor(Color.RED);
+                                textView.setText("Error code" + obj.toString());
+                            }
+                            else {
+                                float amount = (mBoxHeigth - distance) / length;
+
+
+                                if(amount % 1 > 0.5)
+                                    amount += 1;
+                                textView.setText(Integer.toString((int)amount));
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return 0;
+            }
 
             @Override
             public void onSuccess(Object obj) {
-             }
+            }
 
             @Override
             public void onFailure(ParticleCloudException exception) {
                 status.setText("Photon is not connected to the Internet");
                 status.setTextColor(Color.RED);
-             }
+            }
         });
     }
+
     @Override
-    public void onDestroy() {
+    public void onBackPressed() {
         super.onDestroy();
         ParticleCloudSDK.getCloud().logOut();
         Toaster.s(this, "You have been logged out!");
     }
-
 }
