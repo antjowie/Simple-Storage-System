@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         mBoxHeigth = Float.parseFloat(mPreferences.getString(OptionActivity.BOXHEIGTH_KEY,"25"));
 
+        Toaster.s(this,"Created");
+
         getSupportActionBar().setIcon(R.drawable.ic_refresh_white_24dp);
         getSupportActionBar().setIcon(R.drawable.ic_settings_white_24dp);
 
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.sensor3);
         button.setText(mPreferences.getString(SENSOR3_KEY,"Sensor3"));
 
+        mBoxHeigth = Float.parseFloat(mPreferences.getString(OptionActivity.BOXHEIGTH_KEY,"25"));
     }
 
     @Override
@@ -199,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         Object obj = mDevice.callFunction("updateSensor", sen1);
                         float distance = (float) mDevice.getDoubleVariable("sensor1cm");
-                        final TextView textView = (TextView) findViewById(R.id.sensor0int);
+                        final TextView textView = (TextView) findViewById(R.id.sensor1int);
                         @Override
                         public void run() {
                             status.setText("Photon is connected to the Internet");
@@ -252,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
                             else {
                                 float amount = (mBoxHeigth - distance) / length;
 
-
                                 if(amount % 1 > 0.5)
                                     amount += 1;
                                 textView.setText(Integer.toString((int)amount));
@@ -285,7 +287,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else {
                                 float amount = (mBoxHeigth - distance) / length;
-
 
                                 if(amount % 1 > 0.5)
                                     amount += 1;
