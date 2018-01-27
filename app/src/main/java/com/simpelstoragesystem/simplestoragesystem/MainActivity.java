@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         mBoxHeigth = Float.parseFloat(mPreferences.getString(OptionActivity.BOXHEIGTH_KEY,"25"));
 
-        Toaster.s(this,"Created");
-
         getSupportActionBar().setIcon(R.drawable.ic_refresh_white_24dp);
         getSupportActionBar().setIcon(R.drawable.ic_settings_white_24dp);
 
@@ -105,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, OptionActivity.class);
                 startActivity(intent);
                 return true;
+
+            case R.id.parent:
+            {
+                onBackPressed();
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -318,5 +322,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         ParticleCloudSDK.getCloud().logOut();
         Toaster.s(this, "You have been logged out!");
+        finish();
     }
 }

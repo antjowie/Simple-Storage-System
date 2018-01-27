@@ -109,16 +109,17 @@
     <Button
         android:id="@+id/button_apply"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="apply"
         android:textColor="@android:color/background_light"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/boxHeightText" />
+        app:layout_constraintStart_toEndOf="@+id/calibrateLength" />
 
     <Button
         android:id="@+id/sensor3calibrate"
@@ -226,19 +227,31 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:text="Height of each box"
+        android:text="Length of each box"
         app:layout_constraintBottom_toTopOf="@+id/boxHeightText"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/boxHeightText"
-        android:layout_width="wrap_content"
+        android:layout_width="166dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:ems="10"
-        android:hint="Height"
+        android:hint="Length"
         android:inputType="numberDecimal"
         app:layout_constraintBaseline_toBaselineOf="@+id/button_apply"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/calibrateLength"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Calibrate"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_apply"
+        app:layout_constraintStart_toEndOf="@+id/boxHeightText" />
 
 </android.support.constraint.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.io.OptionalDataException;
 import java.util.List;
 import java.util.Vector;
 
@@ -111,6 +112,94 @@ public class OptionActivity extends AppCompatActivity {
             }
         });
 
+        final Button calibrateLength = findViewById(R.id.calibrateLength);
+        calibrateLength.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+
+                Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
+
+                    double id = Double.parseDouble(boxHeigth.getText().toString());
+
+                    @Override
+                    public Object callApi(ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+                        ParticleDevice device = null;
+                        Boolean productFound = false;
+
+                        for(ParticleDevice iter: ParticleCloudSDK.getCloud().getDevices())
+                        {
+                            if(productFound)
+                                break;
+                            if(iter.getName().equals("SimpleStorageSystem"))
+                            {
+                                device = iter;
+                                productFound = true;
+                            }
+                        }
+
+                        if(!productFound)
+                            return -1;
+
+                        if(id > 4)
+                        {
+                            Toaster.s(OptionActivity.this,"Variable exceeded sensor cap");
+                            return -1;
+                        }
+
+                        Vector<String> sensor = new Vector<>();
+                        sensor.add(Integer.toString((int) id));
+
+                        try {
+                            device.callFunction("updateSensor",sensor);
+                        } catch (ParticleDevice.FunctionDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+
+                        String boxHeightString = "";
+                        try {
+                            boxHeightString = Double.toString(device.getDoubleVariable("sensor0cm"));
+                        } catch (ParticleDevice.VariableDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        final String finalBoxHeightString = boxHeightString;
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                switch ((int) id) {
+                                    case 0:
+                                        boxHeigth.setText(finalBoxHeightString);
+                                        break;
+                                    case 1:
+                                        boxHeigth.setText(finalBoxHeightString);
+                                        break;
+                                    case 2:
+                                        boxHeigth.setText(finalBoxHeightString);
+                                        break;
+                                    case 3:
+                                        boxHeigth.setText(finalBoxHeightString);
+                                        break;
+                                    }
+                            }});
+                        return 0;
+                    }
+
+                    @Override
+                    public void onSuccess(Object o) {
+
+                    }
+
+                    @Override
+                    public void onFailure(ParticleCloudException exception) {
+                        Toaster.s(OptionActivity.this,"An error has occurred while calling the Particle Cloud");
+                    }
+                });
+            }
+        });
+
         final Button calibrate0 = findViewById(R.id.sensor0calibrate);
         calibrate0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +245,7 @@ public class OptionActivity extends AppCompatActivity {
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
                 if(boxHeigth.getText().toString().isEmpty())
                 {
-                    Toaster.s(OptionActivity.this,"Box heigth is invalid");
+                    Toaster.s(OptionActivity.this,"Box length is invalid");
                     return -3;
                 }
                 maxDistance = Float.parseFloat(boxHeigth.getText().toString());
@@ -225,7 +314,7 @@ public class OptionActivity extends AppCompatActivity {
                 float height = 0;
 
                 if(tempHeight >= maxDistance || amount <= 0)
-                    Toaster.s(OptionActivity.this, "Invalid amount or max height value");
+                    Toaster.s(OptionActivity.this, "Invalid amount or max length value");
                 else if (tempHeight == 0)
                     Toaster.s(OptionActivity.this, "Login session invalid, please login again");
                 else
